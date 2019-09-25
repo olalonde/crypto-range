@@ -23,25 +23,13 @@ const test = async () => {
     assert.ok(num < 5);
   }
 
-  /*
   {
-    const memo = [];
-    const getBytes = async i => {
-      const bytes = await randomBytes(i);
-      memo.push(bytes);
-      return bytes;
-    };
-    const num = await randomRange(0, 1000000, getBytes);
-    console.log(memo);
-    assert.ok(num >= 0);
-    assert.ok(num < 5);
-  }
-  */
-
-  {
-    const bufs = [253, 254, 255, 252].map(n =>
-      Buffer.from(new Uint32Array([n]))
-    );
+    const maxVal = Math.pow(2, 6 * 8) - 1;
+    const bufs = [maxVal - 2, maxVal - 1, maxVal - 0, maxVal - 3].map(n => {
+      const b = Buffer.allocUnsafe(6);
+      b.writeUIntBE(n, 0, 6);
+      return b;
+    });
     let i = 0;
     const getBytes = async _ => {
       buf = bufs[i];
